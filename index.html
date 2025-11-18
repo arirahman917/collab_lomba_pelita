@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PELITA - Pelindung Lingkungan Kita</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -27,32 +26,146 @@
     </script>
 
     <style>
-        /* Custom CSS untuk Glassmorphism yang lebih smooth */
-        .glass-nav {
-            background: rgba(0, 0, 0, 0.2); /* Base gelap transparan */
-            backdrop-filter: blur(10px);     /* Efek Blur */
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        /*TRANSISI SCROLL*/
+        /* --- KUMPULAN TRANSISI SCROLL (ANIMATION LIBRARY) --- */
+
+        /* Base Class: Wajib dipasang di elemen yang mau dianimasikan */
+        .reveal {
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+            /* Durasi dan Easing smooth */
+            visibility: hidden;
+            /* Supaya tidak bisa diklik sebelum muncul */
+            will-change: opacity, transform;
+            /* Optimasi performa rendering */
         }
-        
+
+        /* State Akhir (Saat elemen terlihat di layar) */
+        .reveal.active {
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+            /* Reset posisi ke semula */
+        }
+
+        /* --- VARIASI GERAKAN --- */
+
+        /* 1. Fade Up (Default: Dari bawah ke atas) */
+        .fade-up {
+            transform: translateY(60px);
+        }
+
+        /* 2. Fade Down (Dari atas ke bawah) */
+        .fade-down {
+            transform: translateY(-60px);
+        }
+
+        /* 3. Fade Right (Dari kiri masuk ke kanan) */
+        .fade-right {
+            transform: translateX(-60px);
+        }
+
+        /* 4. Fade Left (Dari kanan masuk ke kiri) */
+        .fade-left {
+            transform: translateX(60px);
+        }
+
+        /* 5. Zoom In (Membesar dari kecil) */
+        .zoom-in {
+            transform: scale(0.8);
+        }
+
+        /* 6. Zoom Out (Mengecil dari besar) */
+        .zoom-out {
+            transform: scale(1.1);
+        }
+
+        /* 7. Rotate Up (Sedikit memutar dari bawah) */
+        .rotate-up {
+            transform: translateY(60px) rotate(5deg);
+        }
+
+        /* 8. Blur In (Dari blur menjadi jelas) */
+        .blur-in {
+            filter: blur(10px);
+            transform: scale(0.95);
+        }
+
+        .reveal.active.blur-in {
+            filter: blur(0);
+        }
+
+        /* --- UTILITIES (DELAY) --- */
+        /* Gunakan ini jika ada kartu berjejer agar muncul bergantian */
+        .delay-100 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-200 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-300 {
+            transition-delay: 0.3s;
+        }
+
+        .delay-400 {
+            transition-delay: 0.4s;
+        }
+
+        .delay-500 {
+            transition-delay: 0.5s;
+        }
+
+        /*TRANSISI SCROLL*/
+
+        /* Custom CSS untuk Glassmorphism yang lebih smooth */
+        /* Default Navbar (Transparan) */
+        /* --- UPDATE CSS NAVBAR STABIL --- */
+
+        /* Default Navbar (Posisi Atas) */
+        nav {
+            background-color: transparent;
+            /* Trik Anti-Kedip: Pasang border transparan sejak awal */
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Navbar saat di-Scroll (Gelap + Garis Muncul) */
+        .scrolled-nav {
+            background-color: rgba(17, 24, 39, 0.95);
+            /* Gelap transparan */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            /* Saat discroll, border transparan tadi diubah warnanya jadi putih samar */
+            border-color: rgba(255, 255, 255, 0.1);
+
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
         .text-shadow {
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
 
         /* Placeholder styling, sama seperti sebelumnya */
         .img-placeholder {
             background-color: #e0e0e0;
-            border-radius: 0.5rem; /* rounded-lg */
+            border-radius: 0.5rem;
+            /* rounded-lg */
             display: flex;
             align-items: center;
             justify-content: center;
             color: #666;
-            font-size: 0.875rem; /* text-sm */
-            font-weight: 500; /* font-medium */
+            font-size: 0.875rem;
+            /* text-sm */
+            font-weight: 500;
+            /* font-medium */
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
+
         /* .card {
             background: linear-gradient(
                 to top,
@@ -60,73 +173,119 @@
                 rgba(29, 167, 83,1) 90%
             )
         } */
-         .col-sisi {
+        .col-sisi {
             position: relative;
             margin: 100px 0;
-         }
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom Animation untuk Infinite Scroll */
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-infinite-scroll {
+            display: flex;
+            width: max-content;
+            animation: scroll 25s linear infinite;
+        }
+
+        /* Pause animasi saat di-hover (opsional, bagus untuk UX) */
+        /*.animate-infinite-scroll:hover {
+        animation-play-state: paused;
+        }*/
     </style>
 </head>
+
 <body class="font-sans antialiased">
 
-    <nav class="display: none fixed w-full z-50 top-0 transition-all duration-300">
+    <nav id="navbar" class="fixed w-full z-50 top-0 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                
+
                 <div class="flex-1 flex justify-start items-center gap-3">
-                    <img src="images/logo.png" alt="Logo Pelita" class="h-10 w-10 object-contain"> 
+                    <img src="images/logo.png" alt="Logo Pelita" class="h-10 w-10 object-contain">
                     <span class="text-white font-bold text-xl tracking-wide">PELITA</span>
                 </div>
 
                 <div class="hidden md:block">
                     <div class="flex items-baseline space-x-8">
-                        <a href="#" class="text-pelita-green font-bold px-3 py-2 rounded-md text-base hover:text-green-300 transition">Beranda</a>
-                        <a href="#" class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">Tentang Kami</a>
-                        <a href="#" class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">Program</a>
-                        <a href="#" class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">Kontak</a>
-                        <a href="#" class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">FAQ</a>
+                        <a href="#"
+                            class="text-pelita-green font-bold px-3 py-2 rounded-md text-base hover:text-green-300 transition">Beranda</a>
+                        <a href="#"
+                            class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">Tentang
+                            Kami</a>
+                        <a href="#"
+                            class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">Program</a>
+                        <a href="#"
+                            class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">Kontak</a>
+                        <a href="#"
+                            class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">FAQ</a>
                     </div>
                 </div>
 
                 <div class="flex-1 flex justify-end items-center">
                     <div class="hidden md:block">
-                        <a href="#" class="bg-pelita-btn hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-full transition duration-300 shadow-lg">
+                        <a href="#"
+                            class="bg-pelita-btn hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-full transition duration-300 shadow-lg">
                             Donasi
                         </a>
                     </div>
                 </div>
 
                 <div class="-mr-2 flex md:hidden ml-4">
-                    <button type="button" onclick="toggleMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white focus:outline-none">
+                    <button type="button" onclick="toggleMenu()"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white focus:outline-none">
                         <svg class="h-8 w-8" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="md:hidden hidden bg-gray-900/95 backdrop-blur-md absolute w-full border-b border-gray-700" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
-                <a href="#" class="text-pelita-green block px-3 py-2 rounded-md text-base font-bold">Beranda</a>
-                <a href="#" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Tentang Kami</a>
-                <a href="#" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Program</a>
-                <a href="#" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Kontak</a>
-                <a href="#" class="bg-pelita-btn text-white block px-3 py-2 mt-4 mx-4 rounded-full font-semibold">Donasi</a>
+        <div class="hidden md:hidden absolute w-full bg-gray-900/95 backdrop-blur-lg border-b border-gray-700 shadow-xl transition-all duration-300"
+            id="mobile-menu">
+            <div class="px-2 pt-2 pb-8 space-y-2 sm:px-3 text-center">
+                <a href="#"
+                    class="text-pelita-green block px-3 py-3 rounded-md text-base font-bold border-b border-gray-800">Beranda</a>
+                <a href="#"
+                    class="text-gray-300 hover:text-white block px-3 py-3 rounded-md text-base font-medium border-b border-gray-800">Tentang
+                    Kami</a>
+                <a href="#"
+                    class="text-gray-300 hover:text-white block px-3 py-3 rounded-md text-base font-medium border-b border-gray-800">Program</a>
+                <a href="#"
+                    class="text-gray-300 hover:text-white block px-3 py-3 rounded-md text-base font-medium border-b border-gray-800">Kontak</a>
+                <a href="#"
+                    class="bg-pelita-btn hover:bg-green-700 text-white block px-3 py-3 mt-6 mx-8 rounded-full font-semibold shadow-lg">Donasi</a>
             </div>
         </div>
     </nav>
 
     <section class="relative h-screen min-h-[600px] flex items-center justify-center">
-        
+
         <div class="absolute inset-0 z-0">
             <img src="images/hero.png" alt="Background Sampah" class="w-full h-full object-cover bg-gray-700">
             <div class="absolute inset-0 bg-black/60"></div>
         </div>
 
         <div class="relative z-10 text-center px-4 max-w-5xl mx-auto mt-16">
-            
+
             <div class="flex justify-center mb-4">
-                 <div class=""> <img src="images/logo.png" alt="Icon Pelita" class="h-20 w-20 md:h-24 md:w-24 object-contain">
+                <div class=""> <img src="images/logo.png" alt="Icon Pelita"
+                        class="h-20 w-20 md:h-24 md:w-24 object-contain">
                 </div>
             </div>
 
@@ -142,8 +301,9 @@
                 Laporan telah diterima
             </div>
 
-            <a href="#" class="bg-[#32d921] hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full text-lg md:text-xl transition transform hover:scale-105 shadow-[0_0_20px_rgba(50,217,33,0.6)]">
-                Laporkan Masalah Lingkungan
+            <a href="#"
+                class="bg-[#32d921] hover:bg-green-600 text-white font-bold py-4 px-4 rounded-full text-lg md:text-xl transition transform hover:scale-105 shadow-[0_0_20px_rgba(50,217,33,0.6)]">
+                Laporkan Masalah Sampah
             </a>
 
         </div>
@@ -158,32 +318,53 @@
     </section>
 
     <!-- Penjelasan Pelita -->
-    <section class="container mx-auto px-4 py-16 lg:py-24">
-        <div class="flex flex-col lg:flex-row lg:gap-x-12 items-center lg:items-start">
+    <section class="bg-white py-16 lg:py-24 overflow-hidden">
+        <div class="container mx-auto px-4 md:px-8">
 
-            <div class="w-full lg:w-1/2 mb-8 lg:mb-0 translate-y-14">
-                <h2 class="text-3xl lg:text-4xl font-bold text-green-700 mb-4 leading-tight">Sampah Berkurang, Hutan Bertambah</h2>
-                <p class="text-lg lg:text-xl text-gray-700 leading-relaxed">
-                    Inilah mimpi kami di PELITA (Pelindung Lingkungan Kita). Di dekade aksi ini, kami berharap dapat menghadirkan perubahan nyata bagi masyarakat Indonesia, mendorong kebiasaan pengelolaan sampah yang lebih bijak, meningkatkan kepedulian terhadap penghijauan lahan yang gersang, serta membantu mempercepat transisi Indonesia menuju pola hidup yang bertanggung jawab terhadap lingkungan.
-                </p>
-            </div>
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
 
-            <div class="w-full lg:w-1/2">
-                <div class="grid grid-cols-2 grid-rows-2 gap-4">
-                    <div class="img-placeholder h-40 md:h-48 lg:h-56 rounded-xl overflow-hidden">
-                        <img src="images/sampah-numpuk.jpg" alt="Sampah Menumpuk" class="w-full h-full object-cover">
+                <div class="w-full lg:w-1/2 reveal fade-up">
+                    <div class="relative mb-6 inline-block">
+                        <h2
+                            class="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 leading-tight relative z-10">
+                            Sampah Berkurang, <br> Hutan Bertambah
+                        </h2>
                     </div>
 
-                    <div class="img-placeholder row-span-2 h-full rounded-xl overflow-hidden">
-                        <img src="images/hutan-gundul.jpg" alt="Hutan Gundul" class="w-full h-full object-cover">
-                    </div>
+                    <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-6 mt-4 text-justify lg:text-left">
+                        Inilah mimpi kami di PELITA (Pelindung Lingkungan Kita).
+                        Di dekade aksi ini, kami berharap dapat menghadirkan perubahan nyata bagi masyarakat Indonesia
+                        mendorong kebiasaan pengelolaan sampah yang lebih bijak, peningkatan kepedulian reboisasi, serta
+                        membantu mempercepat transisi Indonesia menuju pola hidup yang bertanggung jawab
+                        terhadap lingkungan.
+                    </p>
+                </div>
 
-                    <div class="img-placeholder h-40 md:h-48 lg:h-56 rounded-xl overflow-hidden">
-                        <img src="images/sampah-sungai.png" alt="Sampah Sungai" class="w-full h-full object-cover">
+                <div class="w-full lg:w-1/2 reveal fade-up">
+                    <div class="grid grid-cols-2 gap-4 md:gap-6">
+
+                        <div class="flex flex-col gap-4 md:gap-6">
+                            <div class="relative group overflow-hidden rounded-2xl shadow-lg h-40 md:h-48 lg:h-56">
+                                <img src="images/sampah-sungai.png" alt="Pencemaran sungai"
+                                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                            <div class="relative group overflow-hidden rounded-2xl shadow-lg h-40 md:h-48 lg:h-56">
+                                <img src="images/sampah-numpuk.jpg" alt="Tumpukan sampah plastik"
+                                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                        </div>
+
+                        <div class="relative h-full">
+                            <div class="relative group overflow-hidden rounded-2xl shadow-lg h-full min-h-[340px]">
+                                <img src="images/hutan-gundul.jpg" alt="Lahan gundul"
+                                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </section>
 
@@ -192,141 +373,498 @@
         <div class="container mx-auto px-4">
 
             <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-green-700 mb-4">
-                Program Kami
-            </h2>
-            <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Melalui program-program ini, kami ingin memberdayakan generasi muda, memperkuat komunitas, dan membangun kebiasaan yang lebih peduli lingkungan di seluruh Indonesia.
-            </p>
+                <h2 class="text-4xl font-bold text-green-700 mb-4">
+                    Program Kami
+                </h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Melalui program-program ini, kami ingin memberdayakan generasi muda, memperkuat komunitas, dan
+                    membangun kebiasaan yang lebih peduli lingkungan di seluruh Indonesia.
+                </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
                 <!-- card 1 -->
-                <div class="group bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 h-full flex flex-col">
+                <div
+                    class="group bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 h-full flex flex-col">
                     <div class="relative overflow-hidden h-56">
                         <img src="images/card-1.jpg" alt="Lapor & Bersih" class="w-full h-full object-cover">
                     </div>
-                    
+
                     <div class="p-6 bg-gradient-to-t from-green-700 to-green-600 flex-grow">
                         <h3 class="text-2xl font-bold text-white mb-2">
                             Lapor & Bersih
                         </h3>
                         <p class="text-green-50 opacity-90 leading-relaxed">
-                            Merespons laporan sampah liar dari masyarakat (via WA) dengan aksi pembersihan yang cepat dan terkoordinasi.
+                            Merespons laporan sampah liar dari masyarakat (via WA) dengan aksi pembersihan yang cepat
+                            dan terkoordinasi.
                         </p>
-                    </div> 
+                    </div>
                 </div>
 
                 <!-- card 2 -->
-                <div class="group bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 h-full flex flex-col">
+                <div
+                    class="group bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 h-full flex flex-col">
                     <div class="relative overflow-hidden h-56">
                         <img src="images/card-2.webp" alt="Hijaukan Kembali" class="w-full h-full object-cover">
                     </div>
-                    
+
                     <div class="p-6 bg-gradient-to-t from-green-700 to-green-600 flex-grow">
                         <h3 class="text-2xl font-bold text-white mb-2">
                             Hijaukan Kembali
                         </h3>
                         <p class="text-green-50 opacity-90 leading-relaxed">
-                            Memulihkan lahan kritis dan area pasca-pembersihan melalui program penanaman pohon yang berkelanjutan.
+                            Memulihkan lahan kritis dan area pasca-pembersihan melalui program penanaman pohon yang
+                            berkelanjutan.
                         </p>
-                    </div> 
+                    </div>
                 </div>
-                
+
                 <!-- card 3 -->
-                <div class="group bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 h-full flex flex-col">
+                <div
+                    class="group bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-2 h-full flex flex-col">
                     <div class="relative overflow-hidden h-56">
                         <img src="images/card-3.jpg" alt="Dukung Aksi" class="w-full h-full object-cover">
                     </div>
-                    
+
                     <div class="p-6 bg-gradient-to-t from-green-700 to-green-600 flex-grow">
                         <h3 class="text-2xl font-bold text-white mb-2">
                             Dukung Aksi
                         </h3>
                         <p class="text-green-50 opacity-90 leading-relaxed">
-                            Menggalang pendanaan publik (donasi) dan edukasi untuk mendukung semua operasional pembersihan dan penanaman.
+                            Menggalang pendanaan publik (donasi) dan edukasi untuk mendukung semua operasional
+                            pembersihan dan penanaman.
                         </p>
-                    </div> 
+                    </div>
                 </div>
             </div>
 
             <div class="text-right mt-16">
-            <a href="#" class="text-lg font-medium text-gray-800 relative inline-block group">
-                Lihat selengkapnya...
-                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-600 transition-all duration-300 ease-in-out group-hover:w-full"></span>
-            </a>
-            </div>
-
-        </div>
-        </section>
-
-    <!-- Tentang Kami -->
-    <section class="bg-white py-20 lg:py-24">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-
-            <div class="w-full lg:w-1/2">
-                <div class="grid grid-cols-3 gap-3 lg:gap-4 h-[500px]">
-                
-                    <div class="col-span-1 row-span-2">
-                        <img src="images/ttg-kami-2.jpeg" alt="Aksi pembersihan lingkungan di air" class="rounded-2xl shadow-lg object-cover w-full h-full">
-                    </div>
-
-                    <div class="col-span-1 row-span-1">
-                        <img src="images/ttg-kami-3.jpeg" alt="Aksi pembersihan lingkungan di air" class="rounded-2xl shadow-lg object-cover w-full h-full">
-                    </div>
-
-                    <div class="col-span-1 row-span-2">
-                        <img src="images/ttg-kami-1.jpeg" alt="Aksi pembersihan lingkungan di air" class="rounded-2xl shadow-lg object-cover w-full h-full">
-                    </div>
-
-                    <div class="col-span-1 row-span-2">
-                        <img src="images/ttg-kami-4.webp" alt="Aksi penanaman pohon" class="rounded-2xl shadow-lg object-cover w-full h-full">
-                    </div>
-                
-                </div>
-            </div>
-
-            <div class="w-full lg:w-1/2">
-                <h2 class="text-3xl lg:text-4xl font-bold text-green-700 mb-4">
-                Tentang Kami
-                </h2>
-                <p class="text-lg text-gray-700 leading-relaxed mb-8">
-                kami berperan sebagai pusat informasi dan penggerak kegiatan lingkungan, menghadirkan berbagai program yang berfokus pada edukasi, pelestarian alam, dan pengelolaan sampah. Kami menjalankan inisiatif yang mendorong perubahan perilaku masyarakat menuju hidup yang lebih bersih, sehat, dan berkelanjutan.
-                </p>
-                
-                <a href="#" class="inline-block bg-green-600 text-white font-semibold py-3 px-8 rounded-full text-lg transition duration-300 ease-in-out hover:bg-green-700 hover:-translate-y-1 hover:shadow-lg">
-                Lihat selengkapnya
+                <a href="#" class="text-lg font-medium text-gray-800 relative inline-block group">
+                    Lihat selengkapnya...
+                    <span
+                        class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-600 transition-all duration-300 ease-in-out group-hover:w-full"></span>
                 </a>
             </div>
-            
+
+        </div>
+    </section>
+
+    <!-- Tentang Kami -->
+    <section class="bg-white py-20 lg:py-28 overflow-hidden">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+
+                <div class="w-full lg:w-1/2">
+                    <div class="grid grid-cols-3 gap-2 md:gap-3 lg:gap-3.5 items-center">
+
+                        <div> <img src="images/ttg-kami-4.webp" alt="Aksi membersihkan sampah"
+                                class="w-full h-48 md:h-64 lg:h-72 object-cover rounded-2xl shadow-xl hover:scale-[1.02] transition-transform duration-300">
+                        </div>
+
+                        <div class="flex flex-col gap-2 md:gap-3 lg:gap-3.5">
+                            <img src="images/ttg-kami-2.jpeg" alt="Kegiatan menyapu"
+                                class="w-full h-32 md:h-40 lg:h-48 object-cover rounded-2xl shadow-xl hover:scale-[1.02] transition-transform duration-300">
+                            <img src="images/ttg-kami-3.jpeg" alt="Penanaman mangrove"
+                                class="w-full h-32 md:h-40 lg:h-48 object-cover rounded-2xl shadow-xl hover:scale-[1.02] transition-transform duration-300">
+                        </div>
+
+                        <div> <img src="images/ttg-kami-1.jpeg" alt="Relawan lingkungan"
+                                class="w-full h-48 md:h-64 lg:h-72 object-cover rounded-2xl shadow-xl hover:scale-[1.02] transition-transform duration-300">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-1/2 text-center lg:text-left">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-green-700 mb-6 leading-tight">
+                        Tentang Kami
+                    </h2>
+                    <p class="text-base md:text-lg text-gray-600 leading-relaxed mb-8 lg:pr-8">
+                        Kami berperan sebagai pusat informasi dan penggerak kegiatan lingkungan, menghadirkan berbagai
+                        program yang berfokus pada edukasi, pelestarian alam, dan pengelolaan sampah. Kami menjalankan
+                        inisiatif yang mendorong perubahan perilaku masyarakat menuju hidup yang lebih bersih, sehat,
+                        dan berkelanjutan.
+                    </p>
+
+                    <a href="#"
+                        class="inline-flex items-center justify-center bg-green-600 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-lg hover:bg-green-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
+                        Lihat selengkapnya
+                    </a>
+                </div>
+
             </div>
         </div>
-        </section>
+    </section>
 
     <!-- Pencapaian Kami -->
-    <section><div></div></section>
+    <section class="bg-[#dcecdb] py-16 lg:py-24" id="achievement-section">
+        <div class="container mx-auto px-4">
+
+            <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-green-900 mb-4">
+                    Pencapaian Kami
+                </h2>
+                <p class="text-base lg:text-lg text-gray-800 font-medium leading-relaxed">
+                    Bersama masyarakat, kami membangun perubahan yang lebih hijau, lebih bersih, dan berkelanjutan.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-4 text-center">
+
+                <div class="flex flex-col items-center">
+                    <div
+                        class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-green-900 mb-2 flex items-baseline">
+                        <span class="counter" data-target="100214">0</span>
+                    </div>
+                    <p class="text-sm md:text-base font-bold text-gray-900 uppercase tracking-wide">
+                        Kg Sampah terkumpul
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-green-900 mb-2">
+                        <span class="counter" data-target="85">0</span>
+                    </div>
+                    <p class="text-sm md:text-base font-bold text-gray-900 uppercase tracking-wide">
+                        Lokasi Dibersihkan
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-green-900 mb-2">
+                        <span class="counter" data-target="1200">0</span>
+                    </div>
+                    <p class="text-sm md:text-base font-bold text-gray-900 uppercase tracking-wide">
+                        Laporan Terverifikasi
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div
+                        class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-green-900 mb-2 flex items-baseline">
+                        <span class="counter" data-target="50">0</span>
+                        <span>+</span>
+                    </div>
+                    <p class="text-sm md:text-base font-bold text-gray-900 uppercase tracking-wide">
+                        Mitra Komunitas Terlibat
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     <!-- Aksi Kami -->
-    <section><div></div></section>
+    <section class="bg-white py-20 lg:py-28">
+        <div class="container mx-auto px-4 md:px-8">
+
+            <div class="text-center mb-12 lg:mb-16">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-green-900">
+                    Aksi Kami
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+
+                <div class="group cursor-pointer flex flex-col">
+                    <div class="overflow-hidden rounded-[2rem] shadow-md aspect-[4/3] mb-6">
+                        <img src="images/aksi_kami-river.jpeg" alt="Kolaborasi lingkungan"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-in-out">
+                    </div>
+                    <p
+                        class="text-lg lg:text-xl font-bold text-gray-800 leading-snug pr-2 group-hover:text-green-800 transition-colors">
+                        Aksi Bersih Sungai “Pelita River Cleanup Day”
+                    </p>
+                </div>
+
+                <div class="group cursor-pointer flex flex-col">
+                    <div class="overflow-hidden rounded-[2rem] shadow-md aspect-[4/3] mb-6">
+                        <img src="images/aksi_kami-penanaman.jpeg" alt="Aksi komunitas"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-in-out">
+                    </div>
+                    <p
+                        class="text-lg lg:text-xl font-bold text-gray-800 leading-snug pr-2 group-hover:text-green-800 transition-colors">
+                        Penanaman 500 Bibit Pohon di Area Perkotaan
+                    </p>
+                </div>
+
+                <div class="group cursor-pointer flex flex-col">
+                    <div class="overflow-hidden rounded-[2rem] shadow-md aspect-[4/3] mb-6">
+                        <img src="images/aksi_kami-bappenas.webp" alt="Pembersihan sungai"
+                            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500 ease-in-out">
+                    </div>
+                    <p
+                        class="text-lg lg:text-xl font-bold text-gray-800 leading-snug pr-2 group-hover:text-green-800 transition-colors">
+                        Kolaborasi Riset Lingkungan dengan Bappenas
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     <!-- Buat Laporan -->
-    <section><div></div></section>
+    <section class="bg-white py-16 lg:py-24 overflow-hidden">
+        <div class="container mx-auto px-4 md:px-8">
+
+            <div class="flex flex-col lg:flex-row items-center gap-10 lg:gap-20">
+
+                <div class="w-full lg:w-1/2 order-1">
+                    <div class="relative rounded-2xl overflow-hidden shadow-xl group">
+                        <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-300">
+                        </div>
+
+                        <img src="images/lapor-sampah.jpg" alt="Relawan membersihkan lingkungan"
+                            class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700 ease-in-out">
+                    </div>
+                </div>
+
+                <div class="w-full lg:w-1/2 order-2 text-center lg:text-right">
+
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-green-900 mb-6 leading-tight">
+                        Laporkan Sampah, Kami Bergerak
+                    </h2>
+
+                    <p class="text-lg text-gray-600 mb-8 lg:ml-auto lg:max-w-lg leading-relaxed">
+                        Laporkan titik sampah, pencemaran, atau kerusakan alam melalui WhatsApp. Kami akan
+                        menindaklanjuti laporan Anda dengan aksi pembersihan di lapangan.
+                    </p>
+
+                    <div class="flex justify-center lg:justify-end">
+                        <a href="#"
+                            class="group relative inline-flex items-center justify-center px-8 py-3 text-lg font-semibold text-white transition-all duration-200 bg-green-600 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600 shadow-lg hover:shadow-xl hover:-translate-y-1">
+                            <span>Buat Laporan</span>
+                            <svg class="w-5 h-5 ml-2 -mr-1 transition-transform group-hover:translate-x-1" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     <!-- Donasi -->
-    <section><div></div></section>
+    <section class="bg-white py-16 lg:py-24 overflow-hidden">
+        <div class="container mx-auto px-4 md:px-8">
+
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+
+                <div class="w-full lg:w-1/2 text-left">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#0f391b] mb-6 leading-[1.2]">
+                        Kontribusi Anda Menggerakkan Aksi Nyata
+                    </h2>
+
+                    <p class="text-lg text-gray-700 mb-10 font-medium">
+                        Setiap rupiah membantu tim membersihkan sampah, mengelola limbah dengan benar, dan menanam pohon
+                        baru di area kritis.
+                    </p>
+
+                    <a href="#"
+                        class="inline-block bg-[#4CC619] text-white text-lg font-bold py-3 px-10 rounded-full shadow-lg hover:bg-green-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-in-out">
+                        Ayo Donasi
+                    </a>
+                </div>
+
+                <div class="w-full lg:w-1/2">
+                    <div class="grid grid-cols-2 gap-3 md:gap-4 h-[400px] md:h-[500px]">
+
+                        <div class="relative h-full rounded-xl overflow-hidden group">
+                            <img src="images/donasi-3.jpg" alt="Gunung sampah"
+                                class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                        </div>
+
+                        <div class="flex flex-col gap-3 md:gap-4 h-full">
+
+                            <div class="relative h-1/2 rounded-xl overflow-hidden group">
+                                <img src="images/donasi-2.webp" alt="Membersihkan pantai"
+                                    class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            </div>
+
+                            <div class="relative h-1/2 rounded-xl overflow-hidden group">
+                                <img src="images/donasi-1.jpeg" alt="Sortir sampah"
+                                    class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     <!-- Partner Kami -->
-    <section><div></div></section>
+    <section class="bg-white py-16 lg:py-24 overflow-hidden">
+        <div class="container mx-auto px-4 md:px-8 mb-12 text-center">
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-green-900 pb-8">
+                Partner Kami
+            </h2>
+        </div>
 
-    <!--SKRIP BERANDA-->
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-    </script>
-    <!--SKRIP BERANDA-->
+        <div class="relative w-full max-w-[90rem] mx-auto">
+
+            <div
+                class="absolute top-0 left-0 z-10 h-full w-20 lg:w-32 bg-gradient-to-r from-white to-transparent pointer-events-none">
+            </div>
+            <div
+                class="absolute top-0 right-0 z-10 h-full w-20 lg:w-32 bg-gradient-to-l from-white to-transparent pointer-events-none">
+            </div>
+
+            <div class="animate-infinite-scroll group">
+
+                <div class="flex items-center gap-12 md:gap-20 lg:gap-24 px-6 md:px-10">
+                    <img src="images/mitra-1.jpg" alt="Partner 1" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-2.png" alt="Partner 2" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-3.png" alt="Partner 3" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-4.png" alt="Partner 4" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-5.png" alt="Partner 5" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-6.png" alt="Partner 6" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-7.png" alt="Partner 7" class="h-7 md:h-9 lg:h-12 w-auto object-contain">
+                    <img src="images/mitra-8.png" alt="Partner 8" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                </div>
+
+                <div class="flex items-center gap-12 md:gap-20 lg:gap-24 px-6 md:px-10">
+                    <img src="images/mitra-1.jpg" alt="Partner 1" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-2.png" alt="Partner 2" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-3.png" alt="Partner 3" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-4.png" alt="Partner 4" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-5.png" alt="Partner 5" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-6.png" alt="Partner 6" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                    <img src="images/mitra-7.png" alt="Partner 7" class="h-7 md:h-9 lg:h-12 w-auto object-contain">
+                    <img src="images/mitra-8.png" alt="Partner 8" class="h-10 md:h-14 lg:h-16 w-auto object-contain">
+                </div>
+            </div>
+        </div>
+    </section>
+
 </body>
-</html>  
+
+<script>
+    /* --- SCRIPT NAVBAR BACKGROUND --- */
+    const navbar = document.getElementById('navbar');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    // Fungsi saat di-scroll
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 10) {
+            // Jika scroll ke bawah, tambahkan background gelap
+            navbar.classList.add('scrolled-nav');
+            navbar.classList.remove('bg-transparent');
+        } else {
+            // Jika di paling atas
+            // Cek dulu, kalau menu mobile SEDANG BUKA, jangan transparankan background
+            if (mobileMenu.classList.contains('hidden')) {
+                navbar.classList.remove('scrolled-nav');
+                navbar.classList.add('bg-transparent');
+            }
+        }
+    });
+
+    // Fungsi Toggle Menu Mobile
+    function toggleMenu() {
+        mobileMenu.classList.toggle('hidden');
+
+        // Logika Tambahan:
+        // Jika menu DIBUKA, kita harus paksa navbar jadi gelap (biar tulisannya jelas)
+        // meskipun posisi scroll sedang di paling atas.
+        if (!mobileMenu.classList.contains('hidden')) {
+            navbar.classList.add('scrolled-nav');
+            navbar.classList.remove('bg-transparent');
+        } else {
+            // Jika menu DITUTUP, dan posisi kita ada di paling atas (scroll < 10),
+            // kembalikan ke transparan.
+            if (window.scrollY < 10) {
+                navbar.classList.remove('scrolled-nav');
+                navbar.classList.add('bg-transparent');
+            }
+        }
+    }
+</script>
+
+<script>
+    /* --- SCRIPT TRIGGER ANIMASI --- */
+    document.addEventListener("DOMContentLoaded", () => {
+        // Pilih semua elemen yang punya class 'reveal'
+        const reveals = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 100; // Jarak buffer (px) sebelum elemen muncul
+
+            reveals.forEach((reveal) => {
+                const elementTop = reveal.getBoundingClientRect().top;
+
+                // Jika elemen masuk ke viewport, tambah class 'active'
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+                // Opsional: Hapus 'else' jika ingin animasi hanya terjadi sekali (tidak berulang saat scroll naik)
+                /*else {
+                    reveal.classList.remove('active'); 
+                }*/
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        // Panggil sekali saat load agar elemen yang sudah di layar langsung muncul
+        revealOnScroll();
+    });
+</script>
+<!--BATAS SKRIP ANIMASI-->
+
+<!--SKRIP BERANDA-->
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('hidden');
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200; // Semakin kecil semakin cepat durasinya
+
+        const animateCounters = () => {
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText.replace(/,/g, ''); // Hapus koma untuk kalkulasi
+
+                    // Hitung increment supaya semua selesai bersamaan
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        // Format angka dengan koma (contoh: 100,214)
+                        counter.innerText = Math.ceil(count + inc).toLocaleString('en-US');
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target.toLocaleString('en-US');
+                    }
+                };
+                updateCount();
+            });
+        };
+
+        // Gunakan Intersection Observer agar animasi baru mulai saat di-scroll
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target); // Jalankan sekali saja
+                }
+            });
+        }, { threshold: 0.5 }); // Mulai saat 50% section terlihat
+
+        const section = document.querySelector('#achievement-section');
+        if (section) observer.observe(section);
+    });
+</script>
+<!--SKRIP BERANDA-->
+
+</html>
