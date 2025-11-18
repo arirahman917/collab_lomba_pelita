@@ -119,30 +119,39 @@
 
         /*TRANSISI SCROLL*/
 
-        /* Custom CSS untuk Glassmorphism yang lebih smooth */
-        /* Default Navbar (Transparan) */
-        /* --- UPDATE CSS NAVBAR STABIL --- */
+        /* --- FINAL FIX NAVBAR & MOBILE --- */
+    
+    /* Warna Kaca Gelap (Satu Sumber Warna) */
+    /* --- GAYA SATU WARNA (HEADER + MENU MENYATU) --- */
+    
+    /* 1. Warna Gelap Solid (Kita pakai untuk Menu & Header saat aktif) */
+    .bg-solid-dark {
+        background-color: #111827 !important; /* Hitam pekat (Gray-900) */
+        /* Kalau mau transparan dikit, pakai ini: */
+        /* background-color: rgba(17, 24, 39, 0.98) !important; */
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-bottom: none !important; /* HAPUS border biar nyambung */
+    }
 
-        /* Default Navbar (Posisi Atas) */
-        nav {
-            background-color: transparent;
-            /* Trik Anti-Kedip: Pasang border transparan sejak awal */
-            border-bottom: 1px solid transparent;
-            transition: all 0.3s ease-in-out;
-        }
+    /* 2. Navbar Default (Bening) */
+    #navbar {
+        background-color: transparent;
+        transition: background-color 0.3s ease;
+    }
 
-        /* Navbar saat di-Scroll (Gelap + Garis Muncul) */
-        .scrolled-nav {
-            background-color: rgba(17, 24, 39, 0.95);
-            /* Gelap transparan */
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+    /* 3. Navbar saat Scrolled (Hitam tapi ada garis tipis) */
+    #navbar.scrolled {
+        background-color: rgba(17, 24, 39, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-            /* Saat discroll, border transparan tadi diubah warnanya jadi putih samar */
-            border-color: rgba(255, 255, 255, 0.1);
-
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
+    /* 4. Mobile Menu (Selalu Hitam) */
+    #mobile-menu {
+        /* Warnanya ngikutin class .bg-solid-dark nanti */
+        padding-top: 0px; /* Reset padding */
+    }
 
         .text-shadow {
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
@@ -210,66 +219,52 @@
 
 <body class="font-sans antialiased">
 
-    <nav id="navbar" class="fixed w-full z-50 top-0 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+    <nav id="navbar" class="fixed w-full z-50 top-0 h-20 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex items-center justify-between h-full">
 
                 <div class="flex-1 flex justify-start items-center gap-3">
-                    <img src="images/logo.png" alt="Logo Pelita" class="h-10 w-10 object-contain">
+                    <img src="images/logo.png" alt="Logo" class="h-10 w-10 object-contain">
                     <span class="text-white font-bold text-xl tracking-wide">PELITA</span>
                 </div>
 
                 <div class="hidden md:block">
                     <div class="flex items-baseline space-x-8">
-                        <a href="#"
-                            class="text-pelita-green font-bold px-3 py-2 rounded-md text-base hover:text-green-300 transition">Beranda</a>
-                        <a href="#"
-                            class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">Tentang
-                            Kami</a>
-                        <a href="#"
-                            class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">Program</a>
-                        <a href="#"
-                            class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">Kontak</a>
-                        <a href="#"
-                            class="text-gray-200 hover:text-white px-3 py-2 rounded-md text-base font-medium transition">FAQ</a>
+                        <a href="#" class="text-pelita-green font-bold px-3 py-2 hover:text-green-300 transition">Beranda</a>
+                        <a href="#" class="text-gray-200 hover:text-white px-3 py-2 font-medium transition">Tentang Kami</a>
+                        <a href="#" class="text-gray-200 hover:text-white px-3 py-2 font-medium transition">Program</a>
+                        <a href="#" class="text-gray-200 hover:text-white px-3 py-2 font-medium transition">Kontak</a>
+                        <a href="#" class="text-gray-200 hover:text-white px-3 py-2 font-medium transition">FAQ</a>
                     </div>
                 </div>
 
-                <div class="flex-1 flex justify-end items-center">
-                    <div class="hidden md:block">
-                        <a href="#"
-                            class="bg-pelita-btn hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-full transition duration-300 shadow-lg">
-                            Donasi
-                        </a>
-                    </div>
+                <div class="hidden md:flex flex-1 justify-end items-center">
+                    <a href="#" class="bg-pelita-btn hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-full transition shadow-lg">
+                        Donasi
+                    </a>
                 </div>
 
                 <div class="-mr-2 flex md:hidden ml-4">
-                    <button type="button" onclick="toggleMenu()"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white focus:outline-none">
+                    <button type="button" onclick="toggleMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white focus:outline-none">
                         <svg class="h-8 w-8" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="hidden md:hidden absolute w-full bg-gray-900/95 backdrop-blur-lg border-b border-gray-700 shadow-xl transition-all duration-300"
-            id="mobile-menu">
-            <div class="px-2 pt-2 pb-8 space-y-2 sm:px-3 text-center">
-                <a href="#"
-                    class="text-pelita-green block px-3 py-3 rounded-md text-base font-bold border-b border-gray-800">Beranda</a>
-                <a href="#"
-                    class="text-gray-300 hover:text-white block px-3 py-3 rounded-md text-base font-medium border-b border-gray-800">Tentang
-                    Kami</a>
-                <a href="#"
-                    class="text-gray-300 hover:text-white block px-3 py-3 rounded-md text-base font-medium border-b border-gray-800">Program</a>
-                <a href="#"
-                    class="text-gray-300 hover:text-white block px-3 py-3 rounded-md text-base font-medium border-b border-gray-800">Kontak</a>
-                <a href="#"
-                    class="bg-pelita-btn hover:bg-green-700 text-white block px-3 py-3 mt-6 mx-8 rounded-full font-semibold shadow-lg">Donasi</a>
+        <div class="hidden md:hidden absolute top-20 left-0 w-full bg-solid-dark shadow-xl z-40 transition-all duration-300" id="mobile-menu">
+            <div class="px-4 py-6 space-y-4 flex flex-col items-center">
+                <a href="#" class="text-pelita-green font-bold text-lg py-2">Beranda</a>
+                <a href="#" class="text-white font-medium text-lg py-2">Tentang Kami</a>
+                <a href="#" class="text-white font-medium text-lg py-2">Program</a>
+                <a href="#" class="text-white font-medium text-lg py-2">Kontak</a>
+                <div class="w-full pt-4 px-6">
+                    <a href="#" class="block w-full bg-pelita-btn hover:bg-green-600 text-white text-center font-bold py-3 rounded-full shadow-lg">
+                        Donasi Sekarang
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
@@ -747,45 +742,38 @@
 </body>
 
 <script>
-    /* --- SCRIPT NAVBAR BACKGROUND --- */
     const navbar = document.getElementById('navbar');
-    const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
 
-    // Fungsi saat di-scroll
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 10) {
-            // Jika scroll ke bawah, tambahkan background gelap
-            navbar.classList.add('scrolled-nav');
-            navbar.classList.remove('bg-transparent');
-        } else {
-            // Jika di paling atas
-            // Cek dulu, kalau menu mobile SEDANG BUKA, jangan transparankan background
-            if (mobileMenu.classList.contains('hidden')) {
-                navbar.classList.remove('scrolled-nav');
-                navbar.classList.add('bg-transparent');
+        function updateNavbar() {
+            const isScrolled = window.scrollY > 10;
+            const isMenuOpen = !mobileMenu.classList.contains('hidden');
+
+            // KONDISI 1: MENU SEDANG BUKA
+            // Kita "cat" Header dengan warna gelap solid biar nyambung sama menu
+            if (isMenuOpen) {
+                navbar.classList.add('bg-solid-dark'); 
+                navbar.classList.remove('scrolled');
+            } 
+            // KONDISI 2: MENU TUTUP
+            else {
+                navbar.classList.remove('bg-solid-dark'); // Hapus cat solid
+
+                // Cek Scroll biasa
+                if (isScrolled) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
             }
         }
-    });
 
-    // Fungsi Toggle Menu Mobile
-    function toggleMenu() {
-        mobileMenu.classList.toggle('hidden');
+        window.addEventListener('scroll', updateNavbar);
 
-        // Logika Tambahan:
-        // Jika menu DIBUKA, kita harus paksa navbar jadi gelap (biar tulisannya jelas)
-        // meskipun posisi scroll sedang di paling atas.
-        if (!mobileMenu.classList.contains('hidden')) {
-            navbar.classList.add('scrolled-nav');
-            navbar.classList.remove('bg-transparent');
-        } else {
-            // Jika menu DITUTUP, dan posisi kita ada di paling atas (scroll < 10),
-            // kembalikan ke transparan.
-            if (window.scrollY < 10) {
-                navbar.classList.remove('scrolled-nav');
-                navbar.classList.add('bg-transparent');
-            }
+        function toggleMenu() {
+            mobileMenu.classList.toggle('hidden');
+            updateNavbar(); // Langsung cek ulang saat tombol diklik
         }
-    }
 </script>
 
 <script>
